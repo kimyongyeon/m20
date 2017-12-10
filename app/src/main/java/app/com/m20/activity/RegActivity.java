@@ -63,12 +63,25 @@ public class RegActivity extends AppCompatActivity implements View.OnClickListen
         setContentView(R.layout.activity_reg);
         Utils.fullScreen(this);
 
-        RealmConfiguration config = new RealmConfiguration.Builder()
-                .name("m20.realm")
-                .deleteRealmIfMigrationNeeded()
-                .schemaVersion(42)
-                .build();
-        dbManagement = new DbManagement(config);
+        Realm.init(this);
+
+        // 이 스레드의 Realm 인스턴스 얻습니다
+        Realm realm = Realm.getDefaultInstance();
+
+        // 트랜잭션을 통해 데이터를 영속화합니다
+//        realm.beginTransaction();
+//        User person = realm.createObject(User.class); // 관리 객체를 직접 만듭니다
+//        person.setName("kimyongyeon");
+//        realm.commitTransaction();
+
+        dbManagement = new DbManagement(realm);
+
+        User user = new  User();
+        user.setName("1111");
+        dbManagement.dbUserInfoSave(user);
+        RealmResults<User> user2 = dbManagement.dbLastNoFilterQuery();
+        System.out.println(user2);
+
 
         et = findViewById(R.id.etReg);
         tv = findViewById(R.id.txtComment);

@@ -178,11 +178,9 @@ public class UsbReceiver extends BroadcastReceiver {
 	DbManagement dbManagement;
 	public void mainloop() {
 
-		RealmConfiguration config = new RealmConfiguration.Builder()
-				.name("m20.realm")
-				.schemaVersion(42)
-				.build();
-		dbManagement = new DbManagement(config);
+		Realm.init(mContext);
+		Realm realm = Realm.getDefaultInstance();
+		dbManagement = new DbManagement(realm);
 		mStop = false;
 		mRunningMainLoop = true;
 		Toast.makeText(mContext, "connected", Toast.LENGTH_SHORT).show();

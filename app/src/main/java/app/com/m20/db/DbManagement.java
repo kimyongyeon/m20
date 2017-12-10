@@ -7,6 +7,7 @@ import app.com.m20.model.BodyFat;
 import app.com.m20.model.User;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
+import io.realm.RealmResults;
 import io.realm.RealmSchema;
 
 /**
@@ -16,8 +17,8 @@ import io.realm.RealmSchema;
 public class DbManagement {
     private Realm realm;
 
-    public DbManagement(RealmConfiguration realmConfiguration) {
-        realm = Realm.getInstance(realmConfiguration);
+    public DbManagement(Realm realm) {
+        this.realm = realm;
     }
 
     public Realm getInstance() {
@@ -35,6 +36,10 @@ public class DbManagement {
 
     public User dbNoFilterQuery() {
         return realm.where(User.class).findFirst();
+    }
+
+    public RealmResults<User> dbLastNoFilterQuery() {
+        return realm.where(User.class).findAllSorted("name");
     }
 
     /**
@@ -67,7 +72,6 @@ public class DbManagement {
             body.setWaist(_body.getWaist());
             body.setSide(_body.getSide());
             body.setPosterior(_body.getPosterior());
-
         }));
     }
 
